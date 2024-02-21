@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     @Value("${application.security.jwt.secret-key}")
@@ -27,21 +29,21 @@ public class JwtService {
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshExpiration;
 
-    private final TokenJpaRepository repository;
-
-    public JwtService(TokenJpaRepository repository) {
-        this.repository = repository;
-    }
+    private final TokenJpaRepository tokenJpaRepository;
 
     public void setExpired(String jwt) {
-        var storedToken = repository.findByToken(jwt)
+        var storedToken = tokenJpaRepository.findByToken(jwt)
                 .orElse(null);
         if (storedToken != null) {
             storedToken.setExpired(true);
             storedToken.setRevoked(true);
-            repository.save(storedToken);
+            tokenJpaRepository.save(storedToken);
             SecurityContextHolder.clearContext();
         }
+    }
+
+    public boolean isTokenValid(String jwt) {
+        return tokenJpaRepository.findByToken(jwt).map(t -> !t.isExpired() && !t.isRevoked()).orElse(false);
     }
 
     public String extractUsername(String token) {

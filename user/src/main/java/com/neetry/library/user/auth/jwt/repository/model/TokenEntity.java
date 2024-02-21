@@ -15,7 +15,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "token")
-public class Token {
+public class TokenEntity {
 
     @Id
     @GeneratedValue
@@ -37,7 +37,7 @@ public class Token {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Token token = (Token) o;
+        TokenEntity token = (TokenEntity) o;
         return id != null && Objects.equals(id, token.id);
     }
 

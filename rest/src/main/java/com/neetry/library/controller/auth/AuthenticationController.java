@@ -6,6 +6,7 @@ import com.neetry.library.controller.auth.model.RegisterRequest;
 import com.neetry.library.user.auth.service.AuthenticationService;
 import com.neetry.library.user.auth.service.model.AuthenticationData;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/auth/v1")
 public class AuthenticationController {
@@ -24,12 +26,6 @@ public class AuthenticationController {
     private final AuthMapper mapper;
 
     private final AuthenticationManager manager;
-
-    public AuthenticationController(AuthenticationService service, AuthMapper mapper, AuthenticationManager manager) {
-        this.service = service;
-        this.mapper = mapper;
-        this.manager = manager;
-    }
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationData> register(

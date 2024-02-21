@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@RestController("/api/book/v1/")
+@RequestMapping("/api/book/v1/")
+@RestController
 @Validated
 public class BookController {
 
@@ -85,7 +86,7 @@ public class BookController {
         return ResponseEntity.ok(books);
     }
 
-    @GetMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(
             @PathVariable Long id
     ) {

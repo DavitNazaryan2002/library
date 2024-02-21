@@ -20,7 +20,7 @@ public interface BookJpaRepository extends JpaRepository<BookEntity, Long> {
                     "(:author IS NULL OR e.genre = :genre) AND " +
                     "(:author IS NULL OR e.publisher = :publisher) AND " +
                     "(:olderThan IS NULL OR e.published <= :olderThan) AND " +
-                    "(:olderThan IS NULL OR e.published >= :olderThan)"
+                    "(:newerThan IS NULL OR e.published >= :newerThan)"
     )
     List<BookEntity> searchByFilters(
             String title,

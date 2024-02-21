@@ -1,17 +1,18 @@
-version: '3'
+version: "3.9"
 services:
-  postgres:
-    image: postgres:latest
-    container_name: postgres
-    environment:
-      POSTGRES_DB: mydatabase
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+  db:
+    image: postgres
+    container_name: lil-postgres
     ports:
       - "5432:5432"
+    restart: unless-stopped
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - "./postgres/data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
 
 volumes:
-  postgres_data:
+  db:
     driver: local

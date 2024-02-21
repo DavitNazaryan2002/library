@@ -1,7 +1,7 @@
 package com.neetry.library.user.auth.service;
 
 import com.neetry.library.user.auth.jwt.repository.TokenJpaRepository;
-import com.neetry.library.user.auth.jwt.repository.model.Token;
+import com.neetry.library.user.auth.jwt.repository.model.TokenEntity;
 import com.neetry.library.user.auth.jwt.service.JwtService;
 import com.neetry.library.user.auth.model.Role;
 import com.neetry.library.user.auth.service.model.AuthenticationData;
@@ -9,6 +9,7 @@ import com.neetry.library.user.auth.service.model.command.AuthenticateCommand;
 import com.neetry.library.user.auth.service.model.command.RegisterCommand;
 import com.neetry.library.user.repository.UserJpaRepository;
 import com.neetry.library.user.repository.model.UserEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,24 +18,13 @@ import java.util.function.Consumer;
 import static com.neetry.library.user.auth.model.Role.SUPER_ADMIN;
 import static com.neetry.library.user.auth.model.Role.USER;
 
+@RequiredArgsConstructor
 @Service
 public class AuthenticationService {
     private final UserJpaRepository repository;
     private final TokenJpaRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-
-    public AuthenticationService(
-            UserJpaRepository repository,
-            TokenJpaRepository tokenRepository,
-            PasswordEncoder passwordEncoder,
-            JwtService jwtService
-    ) {
-        this.repository = repository;
-        this.tokenRepository = tokenRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-    }
 
     public AuthenticationData register(RegisterCommand command) {
         var user = UserEntity.builder()
@@ -72,7 +62,7 @@ public class AuthenticationService {
     }
 
     private void saveUserToken(UserEntity user, String jwtToken) {
-        var token = Token.builder()
+        var token = TokenEntity.builder()
                 .user(user)
                 .token(jwtToken)
                 .expired(false)
