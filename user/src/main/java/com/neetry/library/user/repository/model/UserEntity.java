@@ -39,8 +39,8 @@ public class UserEntity implements UserDetails {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "phone", column = @Column(name = "phone", nullable = false)),
-            @AttributeOverride(name = "email", column = @Column(name = "email", nullable = false))
+            @AttributeOverride(name = "phone", column = @Column(name = "phone", nullable = false, unique = true)),
+            @AttributeOverride(name = "email", column = @Column(name = "email", nullable = false, unique = true))
     })
     private ContactInfo contactInfo;
 
