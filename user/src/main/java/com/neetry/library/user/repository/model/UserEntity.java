@@ -54,9 +54,9 @@ public class UserEntity implements UserDetails {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "cardNumber", column = @Column(name = "cardNumber", nullable = false)),
-            @AttributeOverride(name = "expDate", column = @Column(name = "expDate", nullable = false)),
-            @AttributeOverride(name = "cvv", column = @Column(name = "cvv", nullable = false))
+            @AttributeOverride(name = "cardNumber", column = @Column(name = "cardNumber")),
+            @AttributeOverride(name = "expDate", column = @Column(name = "expDate")),
+            @AttributeOverride(name = "cvv", column = @Column(name = "cvv"))
     })
     private PaymentInfo paymentInfo;
 
@@ -70,6 +70,7 @@ public class UserEntity implements UserDetails {
     }
 
     @Embeddable
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class AddressInfo {
@@ -90,7 +91,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return role.getAuthorities();
     }
 
     @Override
@@ -100,7 +101,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return contactInfo.email;
     }
 
     @Override

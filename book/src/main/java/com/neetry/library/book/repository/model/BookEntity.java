@@ -34,7 +34,7 @@ public class BookEntity {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Long isbn;
 
     @Column(nullable = false)

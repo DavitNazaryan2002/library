@@ -23,7 +23,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private static final String[] WHITE_LIST_URL = {};
+    private static final String[] WHITE_LIST_URL = {"/api/auth/v1/**"};
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final JwtService jwtService;
@@ -45,9 +45,9 @@ public class SecurityConfig {
                                 req.requestMatchers(WHITE_LIST_URL)
                                         .permitAll()
 //                                Book Routes
-                                        .requestMatchers(GET, "/api/books/**").hasAnyAuthority(SEARCH_BOOKS)
-                                        .requestMatchers(POST, "/api/books/**").hasAnyAuthority(MANAGE_BOOKS)
-                                        .requestMatchers(DELETE, "/api/books/**").hasAnyAuthority(MANAGE_BOOKS)
+                                        .requestMatchers(GET, "/api/book/**").hasAnyAuthority(SEARCH_BOOKS)
+                                        .requestMatchers(POST, "/api/book/**").hasAnyAuthority(MANAGE_BOOKS)
+                                        .requestMatchers(DELETE, "/api/book/**").hasAnyAuthority(MANAGE_BOOKS)
 //                                  Management Routes
                                         .requestMatchers(PATCH, "/api/management/**").hasAnyAuthority(GRANT_ROLES)
                                         .anyRequest()

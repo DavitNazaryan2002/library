@@ -4,6 +4,9 @@ public record RegisterCommand(
         String name,
         String email,
         String password,
-        Long phone
+        Long phone,
+        String country,
+        String address,
+        String postalZip
 ) {
 }

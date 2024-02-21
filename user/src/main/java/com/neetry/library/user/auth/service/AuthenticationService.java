@@ -27,6 +27,10 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     public AuthenticationData register(RegisterCommand command) {
+        final var alreadyExists = repository.findByContactInfoEmail(command.email()).isPresent();
+        if (alreadyExists) {
+            throw new RuntimeException("User already exists");
+        }
         var user = UserEntity.builder()
                 .name(command.name())
                 .contactInfo(
@@ -35,12 +39,21 @@ public class AuthenticationService {
                                 .phone(command.phone())
                                 .build()
                 )
+                .addressInfo(
+                        UserEntity.AddressInfo.builder()
+                                .address(command.address())
+                                .country(command.country())
+                                .postalZip(command.postalZip())
+                                .build()
+                )
                 .password(passwordEncoder.encode(command.password()))
                 .role(
                         superAdminOrDefault(command.email())
                 )
                 .build();
+        System.out.println("SAVING");
         var savedUser = repository.save(user);
+        System.out.println("SAVED");
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
@@ -84,14 +97,13 @@ public class AuthenticationService {
 
     public AuthenticationData refreshToken(String authHeader) {
         final String refreshToken;
-        final String userEmail;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return AuthenticationData.empty();
         }
         refreshToken = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(refreshToken);
-        if (userEmail != null) {
-            var user = this.repository.findByContactInfoEmail(userEmail)
+        final var userName = jwtService.extractUsername(refreshToken);
+        if (userName != null) {
+            var user = this.repository.findByName(userName)
                     .orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);

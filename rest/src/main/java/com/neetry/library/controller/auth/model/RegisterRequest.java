@@ -12,6 +12,12 @@ public record RegisterRequest(
         @NotBlank
         String password,
         @NotNull @Positive
-        Long phone
+        Long phone,
+        @NotBlank
+        String country,
+        @NotBlank
+        String address,
+        @NotBlank
+        String postalZip
 ) {
 }
