@@ -51,9 +51,7 @@ public class AuthenticationService {
                         superAdminOrDefault(command.email())
                 )
                 .build();
-        System.out.println("SAVING");
         var savedUser = repository.save(user);
-        System.out.println("SAVED");
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);

@@ -19,8 +19,5 @@ public class IntegrationTest extends AbstractPostgresAwareIntegrationTest {
 
         repository.save(book);
         final var retrieved = repository.findAll();
-
-//        repository.findByTitle(null);
-        System.out.println(retrieved.get(0).toString());
     }
 }

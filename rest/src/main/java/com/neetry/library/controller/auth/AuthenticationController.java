@@ -38,7 +38,6 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationData> authenticate(
             @RequestBody AuthenticateRequest request
     ) {
-        System.out.println("HERE");
         return ResponseEntity.ok(
                 service.authenticate(
                         mapper.mapToAuthenticateCommand(request),

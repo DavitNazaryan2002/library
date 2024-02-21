@@ -15,10 +15,11 @@ public interface BookJpaRepository extends JpaRepository<BookEntity, Long> {
 
     @Query(
             "SELECT e FROM BookEntity e WHERE " +
-                    " (e.title LIKE %:title%) AND " +
+                    " (e.title LIKE %:title%) " +
+                    "AND " +
                     "(:author IS NULL OR e.author = :author) AND " +
-                    "(:author IS NULL OR e.genre = :genre) AND " +
-                    "(:author IS NULL OR e.publisher = :publisher) AND " +
+                    "(:genre IS NULL OR e.genre = :genre) AND " +
+                    "(:publisher IS NULL OR e.publisher = :publisher) AND " +
                     "(:olderThan IS NULL OR e.published <= :olderThan) AND " +
                     "(:newerThan IS NULL OR e.published >= :newerThan)"
     )
